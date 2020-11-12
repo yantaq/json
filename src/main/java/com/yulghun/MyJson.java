@@ -16,11 +16,10 @@ public class MyJson {
     public Object findValue(String key, String jsonString) {
         JSONObject jsonObject = new JSONObject((jsonString.trim()));
 
-        for (Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
-            String keyStr = (String) iterator.next();
-            Object keyValue = jsonObject.get(keyStr);
+        jsonObject.keys().forEachRemaining(jsonKey -> {
+            Object keyValue = jsonObject.get(jsonKey);
             handleValue(keyValue);
-        }
+        });
 
         if (keyValues.containsKey(key)) {
             return keyValues.get(key);
@@ -41,9 +40,9 @@ public class MyJson {
     }
 
     private void handleJSONObject(JSONObject jsonObject) {
-        jsonObject.keys().forEachRemaining(key -> {
-            Object value = jsonObject.get(key);
-            currentKey = key;
+        jsonObject.keys().forEachRemaining(jsonKey -> {
+            Object value = jsonObject.get(jsonKey);
+            currentKey = jsonKey;
 
             handleValue(value);
         });
@@ -56,6 +55,7 @@ public class MyJson {
 
     /**
      * This method is just for debugging and printing the JSON to Map values
+     *
      * @param jsonString
      */
     public void printJsonKeys(String jsonString) {
