@@ -1,54 +1,72 @@
 package com.yulghun;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class MyJson {
 
-    public Object findValue(String key, String jsonString) throws IOException {
-//        String key = "MemberAddress1";
-//        String key = "StatusMessage";
+    private Map<Object, Object> keyValues = new HashMap<>();
+    private Object currentKey;
+    private Object currentValue;
 
-        Object value = null;
+    public Object findValue(String key, String jsonString) {
+        JSONObject jsonObject = new JSONObject((jsonString.trim()));
 
-        JSONObject jsonObj = new JSONObject((jsonString.trim()));
-        Object jObj = jsonObj.get("Response");
-        Set<String> keySet = ((JSONObject)jObj).keySet();
-        for (String keyStr: keySet) {
-            Object keyValue = ((JSONObject)jObj).get(keyStr);
-            if (keyStr.equals(key) && !(keyValue instanceof JSONObject)) {
-                value = keyValue.toString();
-            }
-
-            if (keyValue instanceof JSONObject)
-                value = findFromResponse((JSONObject)keyValue, key);
+        for (Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
+            String keyStr = (String) iterator.next();
+            Object keyValue = jsonObject.get(keyStr);
+            handleValue(keyValue);
         }
 
-        if (value != null) {
-            System.out.println(String.format("%s => %s", key, value));
-
-        } else {
-            System.out.println("Value not found for key: " + key);
+        if (keyValues.containsKey(key)) {
+            return keyValues.get(key);
         }
-        return value;
+
+        return null;
     }
 
-    private static Object findFromResponse(JSONObject jsonObj, String key) {
-
-        Set<String> keySet = jsonObj.keySet();
-        for ( String keyStr : keySet) {
-            Object keyValue = jsonObj.get(keyStr);
-            if (keyStr.equals(key) && !(keyValue instanceof JSONObject)) {
-                return keyValue.toString();
-            }
-
-            if (keySet.contains(key)) continue;
-
-            if (keyValue instanceof JSONObject)
-                return findFromResponse((JSONObject)keyValue, key);
+    /**
+     * This method is just for debugging and printing the JSON to Map values
+     * @param jsonObject
+     */
+    public void printJsonKeys(JSONObject jsonObject) {
+        for (Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
+            String keyStr = (String) iterator.next();
+            Object keyValue = jsonObject.get(keyStr);
+            handleValue(keyValue);
         }
-        return null;
+
+        // using for-each loop for iteration over Map.entrySet()
+        for (Map.Entry<Object, Object> entry : keyValues.entrySet())
+            System.out.println("Key = " + entry.getKey() +
+                    ", Value = " + entry.getValue());
+    }
+
+    private void handleValue(Object value) {
+        if (value instanceof JSONObject) {
+            handleJSONObject((JSONObject) value);
+        } else if (value instanceof JSONArray) {
+            handleJSONArray((JSONArray) value);
+        } else {
+            currentValue = value;
+            keyValues.put(currentKey, currentValue);
+        }
+    }
+
+    private void handleJSONObject(JSONObject jsonObject) {
+        jsonObject.keys().forEachRemaining(key -> {
+            Object value = jsonObject.get(key);
+            currentKey = key;
+
+            handleValue(value);
+        });
+    }
+
+    private void handleJSONArray(JSONArray jsonArray) {
+        jsonArray.iterator().forEachRemaining(element -> handleValue(element));
     }
 }
