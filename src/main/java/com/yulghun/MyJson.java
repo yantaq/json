@@ -29,23 +29,6 @@ public class MyJson {
         return null;
     }
 
-    /**
-     * This method is just for debugging and printing the JSON to Map values
-     * @param jsonObject
-     */
-    public void printJsonKeys(JSONObject jsonObject) {
-        for (Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
-            String keyStr = (String) iterator.next();
-            Object keyValue = jsonObject.get(keyStr);
-            handleValue(keyValue);
-        }
-
-        // using for-each loop for iteration over Map.entrySet()
-        for (Map.Entry<Object, Object> entry : keyValues.entrySet())
-            System.out.println("Key = " + entry.getKey() +
-                    ", Value = " + entry.getValue());
-    }
-
     private void handleValue(Object value) {
         if (value instanceof JSONObject) {
             handleJSONObject((JSONObject) value);
@@ -68,5 +51,25 @@ public class MyJson {
 
     private void handleJSONArray(JSONArray jsonArray) {
         jsonArray.iterator().forEachRemaining(element -> handleValue(element));
+    }
+
+
+    /**
+     * This method is just for debugging and printing the JSON to Map values
+     * @param jsonString
+     */
+    public void printJsonKeys(String jsonString) {
+        JSONObject jsonObject = new JSONObject((jsonString.trim()));
+
+        for (Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
+            String keyStr = (String) iterator.next();
+            Object keyValue = jsonObject.get(keyStr);
+            handleValue(keyValue);
+        }
+
+        // using for-each loop for iteration over Map.entrySet()
+        for (Map.Entry<Object, Object> entry : keyValues.entrySet())
+            System.out.println("Key = " + entry.getKey() +
+                    ", Value = " + entry.getValue());
     }
 }
