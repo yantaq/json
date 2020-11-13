@@ -55,22 +55,6 @@ public class MyJsonTest {
     }
 
     @Test
-    public void findValueNew_PropHistPartyKey_Test() {
-        // arrange
-        String jsonString = "{\n\t\"Response\": {\n\t\t\"MRISPropHistory\": {\n\t\t\t\"HistoryData\": {\n\t\t\t\t\"Record\": {\n\t\t\t\t\t\"FullStreetAddress\": \"274 LIGHTHOUSE RD\",\n\t\t\t\t\t\"PropHistChangeTypeLkp\": \"New Listing\",\n\t\t\t\t\t\"PropHistKey\": 230041380847,\n\t\t\t\t\t\"PropHistListingKey\": 230049156554,\n\t\t\t\t\t\"PropHistChangeType\": \"NEW\",\n\t\t\t\t\t\"PropHistTableName\": \"LISTINGS\",\n\t\t\t\t\t\"PropHistSubSystemLocale\": \"BRIGHT_MAIN\",\n\t\t\t\t\t\"BasicLocaleListingStatus\": \"ACTIVE\",\n\t\t\t\t\t\"PropHistChangeTimestamp\": \"2020-10-13T13:50:07\",\n\t\t\t\t\t\"PropHistRecordKey\": 230049156554,\n\t\t\t\t\t\"PropHistColumnName\": \"LIS_ID\",\n\t\t\t\t\t\"PropHistOriginalPickListValue\": {\n\t\t\t\t\t\t\"xsi:nil\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"PropHistNewPickListValue\": {\n\t\t\t\t\t\t\"xsi:nil\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"PropHistItemNumber\": {\n\t\t\t\t\t\t\"xsi:nil\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"PropHistPartyKey\": 240257644347,\n\t\t\t\t\t\"ListingID\": \"DEKT126890\",\n\t\t\t\t\t\"PropHistSystemLocale\": \"BRIGHT\",\n\t\t\t\t\t\"SystemName\": \"ListingKey\",\n\t\t\t\t\t\"PropHistOriginalColumnValue\": {\n\t\t\t\t\t\t\"xsi:nil\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"PropHistNewColumnValue\": 230049156554\n\t\t\t\t},\n\t\t\t\t\"ResourceKey\": 230041380847\n\t\t\t}\n\t\t},\n\t\t\"xsi:noNamespaceSchemaLocation\": \"http://testdata.mris.com/services/rest/schema/mris_data_services.xsd;local=true;system=BRIGHT\",\n\t\t\"ResponseStatus\": {\n\t\t\t\"StatusCode\": 0,\n\t\t\t\"StatusMessage\": \"Success\"\n\t\t},\n\t\t\"xmlns:xsi\": \"http://www.w3.org/2001/XMLSchema-instance\"\n\t}\n}";
-        String key = "PropHistPartyKey";
-        String expected = "240257644347";
-
-        // action
-        MyJson myJson = new MyJson();
-        Object actual = myJson.findValue(key, jsonString);
-
-        // assert
-        Assert.assertEquals(expected, actual.toString());
-
-    }
-
-    @Test
     public void findValue_ResourceKey_FromJSONArray_Test() {
         // arrange
         String jsonString = "{\n\t\"Response\": {\n\t\t\"BRIGHTOffices\": {\n\t\t\t\"Office\": [{\n\t\t\t\t\"ResourceKey\": 230035655534\n\t\t\t}, {\n\t\t\t\t\"ResourceKey\": 230035656017\n\t\t\t}, {\n\t\t\t\t\"ResourceKey\": 230035656096\n\t\t\t}, {\n\t\t\t\t\"ResourceKey\": 230035657429\n\t\t\t}, {\n\t\t\t\t\"ResourceKey\": 230037666253\n\t\t\t}, {\n\t\t\t\t\"ResourceKey\": 230037666259\n\t\t\t}]\n\t\t},\n\t\t\"xsi:noNamespaceSchemaLocation\": \"http://testdata.mris.com/services/rest/schema/mris_data_services.xsd;local=true;system=BRIGHT\",\n\t\t\"ResponseStatus\": {\n\t\t\t\"StatusCode\": 0,\n\t\t\t\"StatusMessage\": \"Success\"\n\t\t},\n\t\t\"xmlns:xsi\": \"http://www.w3.org/2001/XMLSchema-instance\"\n\t}\n}";
